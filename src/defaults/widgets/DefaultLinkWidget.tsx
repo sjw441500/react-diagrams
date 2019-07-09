@@ -84,13 +84,32 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 		}
 	};
 
+	getAngle(px1, py1, px2, py2) { 
+		const x = px2-px1; 
+		const y = py2-py1; 
+		const hypotenuse = Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2)); 
+		let cos = x/hypotenuse; 
+		let radian = Math.acos(cos); 
+		let angle = 180/(Math.PI/radian); 
+		if (y<0) { 
+		  angle = -angle; 
+		} else if ((y == 0) && (x<0)) { 
+		  angle = 180; 
+		} 
+		return angle; 
+	  }
+	
 	generatePoint(pointIndex: number): JSX.Element {
-		let x = this.props.link.points[pointIndex].x;
-		let y = this.props.link.points[pointIndex].y;
-
+		let {link} = this.props;
+		let x = link.points[pointIndex].x;
+		let y = link.points[pointIndex].y;
+		const pointOne = link.points[pointIndex-1];
+		const pointTwo = link.points[pointIndex];
+		let angle = this.getAngle(pointOne.x, pointOne.y, pointTwo.x, pointTwo.y);
+	
 		return (
 			<g key={"point-" + this.props.link.points[pointIndex].id}>
-				<circle
+				{/* <circle
 					cx={x}
 					cy={y}
 					r={5}
@@ -99,7 +118,7 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 						this.bem("__point") +
 						(this.props.link.points[pointIndex].isSelected() ? this.bem("--point-selected") : "")
 					}
-				/>
+				/> */}
 				<circle
 					onMouseLeave={() => {
 						this.setState({ selected: false });
@@ -111,9 +130,20 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 					data-linkid={this.props.link.id}
 					cx={x}
 					cy={y}
-					r={15}
-					opacity={0}
-					className={"point " + this.bem("__point")}
+					r={5}
+					opacity={.5}
+					className={
+						"point " +
+						this.bem("__point") +
+						(this.props.link.points[pointIndex].isSelected() ? this.bem("--point-selected") : "")
+					}				
+				/>
+				<polygon 
+					x={x-20}
+					y={y+12}
+					transform={`rotate(${angle}, ${x}, ${y})`}
+					points={`${x - 10},${y - 8} ${x+3},${y} ${x - 10},${y + 8}`}
+					
 				/>
 			</g>
 		);

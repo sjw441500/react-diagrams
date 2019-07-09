@@ -42,7 +42,7 @@
 	"devDependencies": {
 		"@storybook/addon-actions": "^3.4.3",
 		"@storybook/addon-options": "^3.4.3",
-		"@storybook/addon-storyshots": "^3.4.3",
+		"@storybook/addon-storyshots": "^5.1.9",
 		"@storybook/addons": "^3.4.3",
 		"@storybook/react": "^3.4.3",
 		"@storybook/storybook-deployer": "^2.3.0",
