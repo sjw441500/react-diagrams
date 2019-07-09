@@ -3,7 +3,7 @@
 # dist/main.js.map
 /package
 *.tgz
-@types/
+# @types/
 
 .out
 
